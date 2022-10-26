@@ -13,6 +13,18 @@
       <strong>Email:</strong>
       {{ currentUser.email }}
     </p>
+    <p>
+      <strong>Faculty:</strong>
+      {{ currentUser.faculty }}
+    </p>
+    <p>
+      <strong>Study programme:</strong>
+      {{ currentUser.studyProgramme }}
+    </p>
+    <p>
+      <strong>Study average:</strong>
+      {{ currentUser.studyAverage }}
+    </p>
     <strong>Roles:</strong>
     <ul>
       <li *ngFor="let role of currentUser.roles">
