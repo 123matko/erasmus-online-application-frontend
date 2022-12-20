@@ -8,7 +8,7 @@ import { UserService } from '../_services/user.service';
 })
 export class BoardStudentComponent implements OnInit {
 
-  content?: string;
+  content?: any;
 
   constructor(private userService: UserService) { }
 
@@ -16,6 +16,7 @@ export class BoardStudentComponent implements OnInit {
     this.userService.getStudentBoard().subscribe(
       data => {
         this.content = data;
+        
       },
       err => {
         this.content = JSON.parse(err.error).message;

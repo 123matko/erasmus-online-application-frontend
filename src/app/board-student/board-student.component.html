@@ -1,5 +1,17 @@
 <div class="container">
     <header class="jumbotron">
-      <p>{{ content }}</p>
+      <p><strong>{{content?.firstname}} {{content?.lastname}}</strong></p>
     </header>
+    <p>
+      <strong>Faculty:</strong>
+      {{content?.faculty}}
+    </p>
+    <p *ngIf="!content?.studyProgramme">
+      <strong>Study programme:</strong>
+      {{content?.studyProgramme}}
+    </p>
+    <p *ngIf="!content?.studyAverage">
+      <strong>Study average:</strong>
+      {{content?.studyAverage}}
+    </p>
   </div>

@@ -13,8 +13,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'student', component: BoardStudentComponent },
-  { path: 'mod', component: BoardTeacherComponent },
-  { path: 'admin', component: BoardCoordinatorComponent },
+  { path: 'teacher', component: BoardTeacherComponent },
+  { path: 'coordinator', component: BoardCoordinatorComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 
