@@ -16,7 +16,7 @@ export class BoardStudentComponent implements OnInit {
     this.userService.getStudentBoard().subscribe(
       data => {
         this.content = data;
-        
+        this.userService.saveProfile(this.content);
       },
       err => {
         this.content = JSON.parse(err.error).message;

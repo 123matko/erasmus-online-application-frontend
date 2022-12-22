@@ -3,15 +3,29 @@
       <p><strong>{{content?.firstname}} {{content?.lastname}}</strong></p>
     </header>
     <p>
-      <strong>Faculty:</strong>
-      {{content?.faculty}}
+      <strong>Address:</strong>
+      {{content?.address}}
     </p>
-    <p *ngIf="!content?.studyProgramme">
-      <strong>Study programme:</strong>
-      {{content?.studyProgramme}}
+    <p >
+      <strong>Profile number:</strong>
+      {{content?.profileNumber}}
     </p>
-    <p *ngIf="!content?.studyAverage">
-      <strong>Study average:</strong>
-      {{content?.studyAverage}}
+    <p >
+      <strong>Telephone number:</strong>
+      {{content?.telNumber}}
     </p>
+    <p >
+      <strong>Date of birth:</strong>
+      {{content?.dateOfBirth}}
+    </p>
+    <p >
+      <strong>Place of birth:</strong>
+      {{content?.placeOfBirth}}
+    </p>
+    <p >
+      <strong>Nationality:</strong>
+      {{content?.nationality}}
+    </p>
+
+
   </div>

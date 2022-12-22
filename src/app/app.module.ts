@@ -15,6 +15,7 @@ import { BoardTeacherComponent } from './board-teacher/board-teacher.component';
 import { BoardStudentComponent } from './board-student/board-student.component';
 
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
+import { AppFormComponent } from './app-form/app-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +24,8 @@ import { authInterceptorProviders } from './_helpers/auth.interceptor';
     ProfileComponent,
     BoardCoordinatorComponent,
     BoardTeacherComponent,
-    BoardStudentComponent
+    BoardStudentComponent,
+    AppFormComponent
   ],
   imports: [
     BrowserModule,
