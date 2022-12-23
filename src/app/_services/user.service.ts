@@ -20,14 +20,20 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   saveProfile(profile:any): void{
+    console.log(profile);
     window.sessionStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+  }
+
+  getProfile(id:any):JSON|any{
+    console.log(id);
+    profile = this.http.get(MAIS_URL + 'profile/'+id, { responseType: 'json' });    
+    return profile;
   }
 
   getStudentBoard(): JSON|any {
     console.log(this.parsedUser.id);
     profile = this.http.get(MAIS_URL + 'profile/'+this.parsedUser.id, { responseType: 'json' });
-    console.log(profile.firstname);
-    
+        
     return profile;
   }
 

@@ -1,5 +1,7 @@
 <div class="container">
     <header class="jumbotron">
-      <a *ngIf="content" class="nav-link" routerLink="/app-form">Apply now</a>
+      <p>{{content?.list[0].name}}
+      <a *ngIf="isUserLoggedIn" class="nav-link" routerLink="/app-form"> Apply now</a>
+      </p>
     </header>
   </div>
