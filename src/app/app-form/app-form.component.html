@@ -112,6 +112,18 @@
           Place of birth is required
         </div>
 
+        <label for="sex">Sex</label>
+        <select
+                      class="form-control form-control-sm"
+                      id="sex"
+                      [(ngModel)]="form.sex"
+                      required
+                      #sex="ngModel"
+                    >
+                      <option  value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+
         <label for="nationality">Nationality</label>
         <input
           type="text"

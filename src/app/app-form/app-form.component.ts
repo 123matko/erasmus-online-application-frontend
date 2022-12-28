@@ -46,6 +46,7 @@ export class AppFormComponent implements OnInit {
     placeofbirth:null,
     nationality:null,
     mothertongue:null,
+    sex:null,
     prevStudy: false, 
   };
   profile?: any;
@@ -74,6 +75,7 @@ export class AppFormComponent implements OnInit {
     this.form.dateofbirth= this.profile.dateOfBirth.split(" ")[0]; 
     this.form.placeofbirth=this.profile.placeOfBirth; 
     this.form.nationality=this.profile.nationality; 
+    
     console.log(this.form);
 
     this.languagesTableForm = this.fb.group({
