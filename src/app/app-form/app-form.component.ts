@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { ApplicationService } from '../_services/application.service';
 
+import { FormBuilder, FormControl, FormGroup, FormArray } from '@angular/forms';
+
 const PROFILE_KEY = 'profile';
 
 @Component({
@@ -10,6 +12,31 @@ const PROFILE_KEY = 'profile';
   styleUrls: ['./app-form.component.css']
 })
 export class AppFormComponent implements OnInit {
+  applicationPage = 0;
+
+  languagesTableForm: any; 
+  universitiesTableForm: any;
+  rowsCount: number = 3;
+
+  universitiesList=[
+    {name: 'Paisii Hilendarski University of Plovdiv', country: 'Bulgaria'},
+    {name: 'University of Eastern Finland', country: 'Finland'},
+    {name: 'Universite de technologie de Belfort', country: 'France'},
+    {name: 'University of the Peloponnese', country: 'Greece'},
+    {name: 'Kaunas University of technology', country: 'Lithuania'},
+    {name: 'Universidad de Málaga', country: 'Spain'},
+    {name: 'Yildiz Technical University', country: 'Turkey'}
+  ]
+
+  levels = [
+    {name: 'A1'},
+    {name: 'A2'},
+    {name: 'B1'},
+    {name: 'B2'},
+    {name: 'C1'},
+    {name: 'C2'},
+  ];
+
   form: any = {
     firstname: null,
     lastname: null,
@@ -19,11 +46,22 @@ export class AppFormComponent implements OnInit {
     placeofbirth:null,
     nationality:null,
     mothertongue:null,
-    languages:[]
+    prevStudy: false, 
   };
   profile?: any;
   mobility?:any;
-  constructor(private applicationService: ApplicationService) { }
+
+  get Languages() {
+    return this.languagesTableForm.get('Languages') as FormArray;
+  }
+
+  get Universities(){
+    return this.universitiesTableForm.get('Universities') as FormArray;
+  }
+
+  constructor(private fb: FormBuilder) { }
+
+  
 
   ngOnInit(): void {
     this.profile =  JSON.parse(window.sessionStorage.getItem(PROFILE_KEY));
@@ -37,6 +75,45 @@ export class AppFormComponent implements OnInit {
     this.form.placeofbirth=this.profile.placeOfBirth; 
     this.form.nationality=this.profile.nationality; 
     console.log(this.form);
+
+    this.languagesTableForm = this.fb.group({
+      Languages: this.fb.array([]),
+    });
+    for (let i = 0; i < this.rowsCount; i++) {
+      this.Languages.push(
+        this.fb.group({
+          Language: new FormControl(),
+          LevelOfCompetance: new FormControl(this.levels),
+        })
+      );
+    }
+    this.universitiesTableForm = this.fb.group({
+      Universities: this.fb.array([]),
+    });
+    for (let i = 0; i < this.rowsCount; i++) {
+      this.Universities.push(
+        this.fb.group({
+          University: new FormControl(this.universitiesList),
+          StudyPeriodFrom: new FormControl(),
+          StudyPeriodTo: new FormControl(),
+          DurationOfStay: new FormControl(),
+          NumberOfCredits: new FormControl()
+        })
+      );
+    }
+
+
+  }
+
+  prevPage(): void{
+    if(this.applicationPage>0){
+      this.applicationPage--;
+     }
+  }
+  nextPage(): void{
+    if(this.applicationPage<2){
+      this.applicationPage++;
+     }
   }
 
   onSubmit(): void {
@@ -47,9 +124,16 @@ export class AppFormComponent implements OnInit {
       dateofbirth,
       placeofbirth,
       nationality,
-    mothertongue,
-  languages} = this.form;
-
+    mothertongue,prevStudy} = this.form;
+    const{ Languages} = this.languagesTableForm.value;
+      console.log(Languages,firstname,
+        lastname,
+        address,
+        telnumber,
+        dateofbirth,
+        placeofbirth,
+        nationality,
+      mothertongue, prevStudy);
    
   }
 

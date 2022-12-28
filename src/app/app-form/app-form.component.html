@@ -9,7 +9,7 @@
       #f="ngForm"
       novalidate
     >
-      <div class="form-group">
+      <div class="form-group" *ngIf="applicationPage == 0">
         <label for="firstname">First name</label>
         <input
           type="text"
@@ -60,10 +60,11 @@
         >
           Address is required
         </div>
-      
+
         <label for="telnumber">Tel.</label>
-        <input 
-          type="tel"     class="form-control"
+        <input
+          type="tel"
+          class="form-control"
           name="telnumber"
           [(ngModel)]="form.telnumber"
           required
@@ -78,8 +79,9 @@
         </div>
 
         <label for="dateofbirth">Date of birth</label>
-        <input 
-          type="date"     class="form-control"
+        <input
+          type="date"
+          class="form-control"
           name="dateofbirth"
           [(ngModel)]="form.dateofbirth"
           required
@@ -94,8 +96,9 @@
         </div>
 
         <label for="placeofbirth">Place of birth</label>
-        <input 
-          type="text"     class="form-control"
+        <input
+          type="text"
+          class="form-control"
           name="placeofbirth"
           [(ngModel)]="form.placeofbirth"
           required
@@ -110,8 +113,9 @@
         </div>
 
         <label for="nationality">Nationality</label>
-        <input 
-          type="text"     class="form-control"
+        <input
+          type="text"
+          class="form-control"
           name="nationality"
           [(ngModel)]="form.nationality"
           required
@@ -124,32 +128,190 @@
         >
           Nationality is required
         </div>
-      
 
-      <label for="mothertongue">Mother tongue</label>
-      <input 
-        type="text"     class="form-control"
-        name="mothertongue"
-        [(ngModel)]="form.mothertongue"
-        required
-        #mothertongue="ngModel"
-      />
-      <div
-        class="alert alert-danger"
-        role="alert"
-        *ngIf="mothertongue.errors && f.submitted"
-      >
-        Mother tongue is required
+        <label for="mothertongue">Mother tongue</label>
+        <input
+          type="text"
+          class="form-control"
+          name="mothertongue"
+          [(ngModel)]="form.mothertongue"
+          required
+          #mothertongue="ngModel"
+        />
+        <div
+          class="alert alert-danger"
+          role="alert"
+          *ngIf="mothertongue.errors && f.submitted"
+        >
+          Mother tongue is required
+        </div>
       </div>
-    </div>
+      <form [formGroup]="languagesTableForm" *ngIf="applicationPage == 0">
+        <label>Other languages</label>
+        <table class="form-group form-control-sm">
+          <tr>
+            <th>Language</th>
+            <th>Level of competence</th>
+          </tr>
+          <tbody>
+            <ng-container formArrayName="Languages">
+              <ng-container
+                *ngFor="let languages of Languages.controls; let i = index"
+              >
+                <tr [formGroupName]="i">
+                  <td>
+                    <input
+                      type="textarea"
+                      class="form-control form-control-sm"
+                      id="Language"
+                      formControlName="Language"
+                    />
+                  </td>
+                  <td>
+                    <select
+                      class="form-control form-control-sm"
+                      id="LevelOfCompetance "
+                      formControlName="LevelOfCompetance"
+                    >
+                      <option *ngFor="let level of levels" [ngValue]="level">
+                        {{ level.name }}
+                      </option>
+                    </select>
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+          </tbody>
+        </table>
+      </form>
 
-      
+      <form [formGroup]="universitiesTableForm" *ngIf="applicationPage == 1">
+        <label>RECEIVING INSTITUTIONS (in order of preference):</label>
+        <table class="form-group form-control-sm">
+          <tr>
+            <th>Institution</th>
+            <th>Period ofstudy</th>
+            <th></th>
+            <th>Duration of stay (months)</th>
+            <th>N° of expected ECTS credits</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>From</th>
+            <th>To</th>
+            <th></th>
+            <th></th>
+          </tr>
+          <tbody>
+            <ng-container formArrayName="Universities">
+              <ng-container
+                *ngFor="let university of Universities.controls; let i = index"
+              >
+                <tr [formGroupName]="i">
+                  <td>
+                    <select
+                      class="form-control form-control-sm"
+                      id="University"
+                      formControlName="University"
+                    >
+                      <option
+                        *ngFor="let uni of universitiesList"
+                        [ngValue]="uni"
+                      >
+                        {{ uni.name }} ({{ uni.country }})
+                      </option>
+                    </select>
+                  </td>
+                  <td>
+                    <input
+                      type="date"
+                      class="form-control form-control-sm"
+                      id="StudyPeriodFrom"
+                      formControlName="StudyPeriodFrom"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="date"
+                      class="form-control form-control-sm"
+                      id="StudyPeriodTo"
+                      formControlName="StudyPeriodTo"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      class="form-control form-control-sm"
+                      id="DurationOfStay"
+                      formControlName="DurationOfStay"
+                      min="1"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      class="form-control form-control-sm"
+                      id="NumberOfCredits"
+                      formControlName="NumberOfCredits"
+                      [min]="0"
+                    />
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+          </tbody>
+        </table>
+      </form>
+      <form name="application-form" >
+        <div class="form-group" *ngIf="applicationPage == 1">
+          <label
+            >Have you already been studying abroad within the Erasmus programme
+            in the study cycle of the mobility?</label
+          >
+          <div class="form-check">
+            <input
+              type="radio"
+              class="form-check-input"
+              name="prevStudyMobility"
+              id="prevStudyYes"
+              [(ngModel)]="form.prevStudy"
+              required
+              #firstname="ngModel"
+              [value]="true"
+            />
+            <label class="form-check-label" for="prevStudyYes">Yes </label>
+          </div>
+          <div class="form-check">
+            <input
+              type="radio"
+              class="form-check-input"
+              name="prevStudyMobility"
+              id="prevStudyNo"
+              [(ngModel)]="form.prevStudy"
+              required
+              #prevStudy="ngModel"
+              [value]="false"
+            />
+            <label class="form-check-label" for="prevStudyNo">No </label>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="applicationPage == 1 && form.prevStudy">
+          <input
+                      type="date"
+                      class="form-control form-control-sm"
+                      id="StudyPeriodFrom"
+                      [(ngModel)]="form.prevStudyPeriondFrom"
+                      [ngModelOptions]="{standalone: true}"
+                    />
+        </div>
+      </form>
 
-    
       <div class="form-group">
-        <button class="btn btn-primary btn-block">Next page</button>
+        <button class="btn btn-primary btn-block" *ngIf="f.form.valid" (click)="nextPage()">Next page</button>
+        
       </div>
       <div class="form-group"></div>
     </form>
+    <button class="btn btn-primary btn-block" (click)="prevPage()">Previus page</button>
   </div>
 </div>

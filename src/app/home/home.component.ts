@@ -34,6 +34,7 @@ export class HomeComponent implements OnInit {
     this.isUserLoggedIn=this.user?true:false;
     this.applicationService.getActiveCalls().subscribe(
       data => {
+        console.log(data);
         this.content = data;
       },
       err => {
