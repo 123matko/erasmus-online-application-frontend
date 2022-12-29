@@ -4,7 +4,17 @@ import { ApplicationService } from '../_services/application.service';
 
 import { FormBuilder, FormControl, FormGroup, FormArray } from '@angular/forms';
 
+
 const PROFILE_KEY = 'profile';
+const dictionary= new Map<string, string>();
+  dictionary.set("Slovenská","Slovak");
+  dictionary.set("Maďarská","Hungarian");
+  dictionary.set("Česká","Czech");
+  dictionary.set("Nemecká","German");
+  dictionary.set("Ukrajinská","Ukrainian");
+  dictionary.set("Ruská","Russian");
+  dictionary.set("Poľská","Polish");
+  dictionary.set("Srbská","Serbian");
 
 @Component({
   selector: 'app-app-form',
@@ -12,21 +22,15 @@ const PROFILE_KEY = 'profile';
   styleUrls: ['./app-form.component.css']
 })
 export class AppFormComponent implements OnInit {
-  applicationPage = 0;
+  applicationPage = 2;
+  
 
   languagesTableForm: any; 
   universitiesTableForm: any;
   rowsCount: number = 3;
 
-  universitiesList=[
-    {name: 'Paisii Hilendarski University of Plovdiv', country: 'Bulgaria'},
-    {name: 'University of Eastern Finland', country: 'Finland'},
-    {name: 'Universite de technologie de Belfort', country: 'France'},
-    {name: 'University of the Peloponnese', country: 'Greece'},
-    {name: 'Kaunas University of technology', country: 'Lithuania'},
-    {name: 'Universidad de Málaga', country: 'Spain'},
-    {name: 'Yildiz Technical University', country: 'Turkey'}
-  ]
+  universitiesList;
+  Sex = ["Male","Female",] ;
 
   levels = [
     {name: 'A1'},
@@ -47,7 +51,12 @@ export class AppFormComponent implements OnInit {
     nationality:null,
     mothertongue:null,
     sex:null,
-    prevStudy: false, 
+    prevStudy: null, 
+    prevStudyFrom: null,
+    prevStudyTo: null,
+    prevTraineeFrom:null,
+    prevTrainee: null,
+    prevTraineeTo:null,
   };
   profile?: any;
   mobility?:any;
@@ -60,11 +69,15 @@ export class AppFormComponent implements OnInit {
     return this.universitiesTableForm.get('Universities') as FormArray;
   }
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,private applicationService: ApplicationService) { }
 
   
 
   ngOnInit(): void {
+    this.applicationService.getUniversities().subscribe(
+      data => {
+      this.universitiesList = data.list;
+    });
     this.profile =  JSON.parse(window.sessionStorage.getItem(PROFILE_KEY));
     console.log(this.profile);
     this.mobility = "2023/2024";   
@@ -74,7 +87,7 @@ export class AppFormComponent implements OnInit {
     this.form.telnumber="+421"+this.profile.telNumber; 
     this.form.dateofbirth= this.profile.dateOfBirth.split(" ")[0]; 
     this.form.placeofbirth=this.profile.placeOfBirth; 
-    this.form.nationality=this.profile.nationality; 
+    this.form.nationality=dictionary.get(this.profile.nationality); 
     
     console.log(this.form);
 
@@ -85,7 +98,7 @@ export class AppFormComponent implements OnInit {
       this.Languages.push(
         this.fb.group({
           Language: new FormControl(),
-          LevelOfCompetance: new FormControl(this.levels),
+          LevelOfCompetance: new FormControl(),
         })
       );
     }
@@ -95,7 +108,7 @@ export class AppFormComponent implements OnInit {
     for (let i = 0; i < this.rowsCount; i++) {
       this.Universities.push(
         this.fb.group({
-          University: new FormControl(this.universitiesList),
+          University: new FormControl(),
           StudyPeriodFrom: new FormControl(),
           StudyPeriodTo: new FormControl(),
           DurationOfStay: new FormControl(),
@@ -103,8 +116,14 @@ export class AppFormComponent implements OnInit {
         })
       );
     }
+    
 
+  }
 
+  onChange(value:string){
+    console.log(value);
+
+    this.form.sex= value;
   }
 
   prevPage(): void{
@@ -118,6 +137,8 @@ export class AppFormComponent implements OnInit {
      }
   }
 
+  
+
   onSubmit(): void {
     const { firstname,
       lastname,
@@ -126,14 +147,14 @@ export class AppFormComponent implements OnInit {
       dateofbirth,
       placeofbirth,
       nationality,
-    mothertongue,prevStudy} = this.form;
+    mothertongue,prevStudy,sex} = this.form;
     const{ Languages} = this.languagesTableForm.value;
       console.log(Languages,firstname,
         lastname,
         address,
         telnumber,
         dateofbirth,
-        placeofbirth,
+        placeofbirth,sex,
         nationality,
       mothertongue, prevStudy);
    

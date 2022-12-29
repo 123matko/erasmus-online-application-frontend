@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TokenStorageService } from './token-storage.service';
 import { ProfileComponent } from '../profile/profile.component';
@@ -9,6 +9,17 @@ const MAIS_URL = 'http://localhost:8080/api/test/';
 const USER_KEY = 'auth-user';
 const PROFILE_KEY = 'profile';
 var profile = null;
+var replacer = function(key, value) {
+
+  if (key instanceof Date) {
+     return value.toUTCString();
+  }
+  
+  return value;
+}
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable({
   providedIn: 'root'
@@ -21,19 +32,23 @@ export class UserService {
 
   saveProfile(profile:any): void{
     console.log(profile);
-    window.sessionStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+    window.sessionStorage.setItem(PROFILE_KEY, JSON.stringify(profile.object,replacer));
   }
 
   getProfile(id:any):JSON|any{
     console.log(id);
-    profile = this.http.get(MAIS_URL + 'profile/'+id, { responseType: 'json' });    
+    profile = this.http.post(MAIS_URL + 'profile/',{id} ,httpOptions); 
+    console.log(profile) 
     return profile;
   }
 
+  
+
   getStudentBoard(): JSON|any {
     console.log(this.parsedUser.id);
-    profile = this.http.get(MAIS_URL + 'profile/'+this.parsedUser.id, { responseType: 'json' });
-        
+    var id =this.parsedUser.id;
+    profile = this.http.post(MAIS_URL + 'profile/',{id} ,httpOptions);
+     
     return profile;
   }
 

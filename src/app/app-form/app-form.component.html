@@ -4,13 +4,15 @@
   </header>
   <div class="card card-container">
     <form
+      class="container"
       name="application-form"
       (ngSubmit)="f.form.valid && onSubmit()"
       #f="ngForm"
       novalidate
     >
+      <!-- Page 0 contact information and languages-->
       <div class="form-group" *ngIf="applicationPage == 0">
-        <label for="firstname">First name</label>
+        <label for="firstname" class="control-label">First name</label>
         <input
           type="text"
           class="form-control"
@@ -27,7 +29,7 @@
           First name is required!
         </div>
 
-        <label for="lastname">Family name</label>
+        <label for="lastname" class="control-label">Family name</label>
         <input
           type="text"
           class="form-control"
@@ -44,7 +46,7 @@
           Family name is required
         </div>
 
-        <label for="address">Address</label>
+        <label for="address" class="control-label">Address</label>
         <input
           type="text"
           class="form-control"
@@ -61,7 +63,7 @@
           Address is required
         </div>
 
-        <label for="telnumber">Tel.</label>
+        <label for="telnumber" class="control-label">Telephone number</label>
         <input
           type="tel"
           class="form-control"
@@ -78,7 +80,7 @@
           Telephone number is required
         </div>
 
-        <label for="dateofbirth">Date of birth</label>
+        <label for="dateofbirth" class="control-label">Date of birth</label>
         <input
           type="date"
           class="form-control"
@@ -95,7 +97,7 @@
           Date of birth is required
         </div>
 
-        <label for="placeofbirth">Place of birth</label>
+        <label for="placeofbirth" class="control-label">Place of birth</label>
         <input
           type="text"
           class="form-control"
@@ -112,19 +114,37 @@
           Place of birth is required
         </div>
 
-        <label for="sex">Sex</label>
-        <select
-                      class="form-control form-control-sm"
-                      id="sex"
-                      [(ngModel)]="form.sex"
-                      required
-                      #sex="ngModel"
-                    >
-                      <option  value="male">Male</option>
-                      <option value="female">Female</option>
-                    </select>
+        <div class="form-group">
+          <label class="control-label">Sex</label>
+          <div class="form-check">
+            <input
+              type="radio"
+              class="form-check-input"
+              name="sex"
+              id="male"
+              [(ngModel)]="form.sex"
+              required
+              #sex="ngModel"
+              [value]="Sex[0]"
+            />
+            <label class="form-check-label" for="male">Male</label>
+          </div>
+          <div class="form-check">
+            <input
+              type="radio"
+              class="form-check-input"
+              name="sex"
+              id="female"
+              [(ngModel)]="form.sex"
+              required
+              #sex="ngModel"
+              [value]="Sex[1]"
+            />
+            <label class="form-check-label" for="female">Female </label>
+          </div>
+        </div>
 
-        <label for="nationality">Nationality</label>
+        <label for="nationality" class="control-label">Nationality</label>
         <input
           type="text"
           class="form-control"
@@ -141,13 +161,16 @@
           Nationality is required
         </div>
 
-        <label for="mothertongue">Mother tongue</label>
+        <label for="mothertongue" class="control-label"
+          >Mother tongue (e.g. Slovak)</label
+        >
         <input
           type="text"
           class="form-control"
           name="mothertongue"
           [(ngModel)]="form.mothertongue"
           required
+          minlength="3"
           #mothertongue="ngModel"
         />
         <div
@@ -157,9 +180,19 @@
         >
           Mother tongue is required
         </div>
+        <div
+          class="alert alert-danger"
+          role="alert"
+          *ngIf="mothertongue.errors?.minlength"
+        >
+          Shorten language name is 3 letters long. Please provide valid
+          language.
+        </div>
       </div>
+      <!--Languages -->
       <form [formGroup]="languagesTableForm" *ngIf="applicationPage == 0">
-        <label>Other languages</label>
+        <label>Other languages (e.g. English)</label>
+        <p class="control-label">At least one foregain language is required.</p>
         <table class="form-group form-control-sm">
           <tr>
             <th>Language</th>
@@ -172,23 +205,60 @@
               >
                 <tr [formGroupName]="i">
                   <td>
-                    <input
-                      type="textarea"
-                      class="form-control form-control-sm"
-                      id="Language"
-                      formControlName="Language"
-                    />
+                    <div *ngIf="i == 0; then requiredInput; else input"></div>
+                    <ng-template #requiredInput>
+                      <input
+                        type="textarea"
+                        class="form-control form-control-sm"
+                        id="Language"
+                        formControlName="Language"
+                        minlength="3"
+                        required
+                      />
+                    </ng-template>
+                    <ng-template #input>
+                      <input
+                        type="textarea"
+                        class="form-control form-control-sm"
+                        id="Language"
+                        formControlName="Language"
+                        minlength="3"
+                        #input
+                    /></ng-template>
                   </td>
                   <td>
-                    <select
-                      class="form-control form-control-sm"
-                      id="LevelOfCompetance "
-                      formControlName="LevelOfCompetance"
-                    >
-                      <option *ngFor="let level of levels" [ngValue]="level">
-                        {{ level.name }}
-                      </option>
-                    </select>
+                    <div
+                      *ngIf="i == 0; then requiredSelectInput; else selectInput"
+                    ></div>
+                    <ng-template #requiredSelectInput>
+                      <select
+                        class="form-control form-control-sm"
+                        id="LevelOfCompetance "
+                        formControlName="LevelOfCompetance"
+                        required
+                      >
+                        <option
+                          *ngFor="let level of levels"
+                          [ngValue]="level.name"
+                        >
+                          {{ level.name }}
+                        </option>
+                      </select>
+                    </ng-template>
+                    <ng-template #selectInput>
+                      <select
+                        class="form-control form-control-sm"
+                        id="LevelOfCompetance "
+                        formControlName="LevelOfCompetance"
+                      >
+                        <option
+                          *ngFor="let level of levels"
+                          [ngValue]="level.name"
+                        >
+                          {{ level.name }}
+                        </option>
+                      </select>
+                    </ng-template>
                   </td>
                 </tr>
               </ng-container>
@@ -196,22 +266,23 @@
           </tbody>
         </table>
       </form>
-
+      <!--End of page 0-->
+      <!--Page 1 Universities and previous studies abroad-->
       <form [formGroup]="universitiesTableForm" *ngIf="applicationPage == 1">
-        <label>RECEIVING INSTITUTIONS (in order of preference):</label>
+        <label class="control-label"
+          >RECEIVING INSTITUTIONS (in order of preference):</label
+        >
         <table class="form-group form-control-sm">
           <tr>
             <th>Institution</th>
             <th>Period ofstudy</th>
             <th></th>
-            <th>Duration of stay (months)</th>
             <th>N° of expected ECTS credits</th>
           </tr>
           <tr>
             <th></th>
             <th>From</th>
             <th>To</th>
-            <th></th>
             <th></th>
           </tr>
           <tbody>
@@ -225,6 +296,7 @@
                       class="form-control form-control-sm"
                       id="University"
                       formControlName="University"
+                      required
                     >
                       <option
                         *ngFor="let uni of universitiesList"
@@ -240,6 +312,7 @@
                       class="form-control form-control-sm"
                       id="StudyPeriodFrom"
                       formControlName="StudyPeriodFrom"
+                      required
                     />
                   </td>
                   <td>
@@ -248,15 +321,7 @@
                       class="form-control form-control-sm"
                       id="StudyPeriodTo"
                       formControlName="StudyPeriodTo"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      class="form-control form-control-sm"
-                      id="DurationOfStay"
-                      formControlName="DurationOfStay"
-                      min="1"
+                      required
                     />
                   </td>
                   <td>
@@ -266,6 +331,7 @@
                       id="NumberOfCredits"
                       formControlName="NumberOfCredits"
                       [min]="0"
+                      required
                     />
                   </td>
                 </tr>
@@ -274,9 +340,9 @@
           </tbody>
         </table>
       </form>
-      <form name="application-form" >
+      <form name="application-form" #prevStudyForm="ngForm" novalidate>
         <div class="form-group" *ngIf="applicationPage == 1">
-          <label
+          <label class="control-label"
             >Have you already been studying abroad within the Erasmus programme
             in the study cycle of the mobility?</label
           >
@@ -288,7 +354,7 @@
               id="prevStudyYes"
               [(ngModel)]="form.prevStudy"
               required
-              #firstname="ngModel"
+              #prevStudy="ngModel"
               [value]="true"
             />
             <label class="form-check-label" for="prevStudyYes">Yes </label>
@@ -307,23 +373,170 @@
             <label class="form-check-label" for="prevStudyNo">No </label>
           </div>
         </div>
-        <div class="form-group" *ngIf="applicationPage == 1 && form.prevStudy">
+        <div
+          class="form-group row"
+          *ngIf="applicationPage == 1 && form.prevStudy"
+        >
+          <label for="prevStudyFrom" class="control-label col-sm">From:</label>
           <input
-                      type="date"
-                      class="form-control form-control-sm"
-                      id="StudyPeriodFrom"
-                      [(ngModel)]="form.prevStudyPeriondFrom"
-                      [ngModelOptions]="{standalone: true}"
-                    />
+            type="date"
+            class="form-control form-control-sm col-md-4"
+            name="prevStudyFrom"
+            #prevStudyFrom="ngModel"
+            required
+            [(ngModel)]="form.prevStudyFrom"
+          />
+          <label for="prevStudyTo" class="control-label col-sm">To:</label>
+          <input
+            type="date"
+            class="form-control form-control-sm col-md-4"
+            name="prevStudyTo"
+            #prevStudyTo="ngModel"
+            required
+            [(ngModel)]="form.prevStudyTo"
+          />
+        </div>
+
+        <!--prevTrainneship-->
+        <div class="form-group" *ngIf="applicationPage == 1">
+          <label class="control-label"
+            >Have you already been attending an Erasmus traineeship abroad in
+            the study cycle of the mobility?</label
+          >
+          <div class="form-check">
+            <input
+              type="radio"
+              class="form-check-input"
+              name="prevTraineeMobility"
+              id="prevTraineeYes"
+              [(ngModel)]="form.prevTrainee"
+              required
+              #prevTrainee="ngModel"
+              [value]="true"
+            />
+            <label class="form-check-label" for="prevTraineeYes">Yes </label>
+          </div>
+          <div class="form-check">
+            <input
+              type="radio"
+              class="form-check-input"
+              name="prevTrainee"
+              id="prevTraineeNo"
+              [(ngModel)]="form.prevTrainee"
+              required
+              #prevTrainee="ngModel"
+              [value]="false"
+            />
+            <label class="form-check-label" for="prevTraineeNo">No </label>
+          </div>
+        </div>
+        <div
+          class="form-group row"
+          *ngIf="applicationPage == 1 && form.prevTrainee"
+        >
+          <label for="prevTraineeFrom" class="control-label col-sm"
+            >From:</label
+          >
+          <input
+            type="date"
+            class="form-control form-control-sm col-md-4"
+            name="prevTraineeFrom"
+            #prevTraineeFrom="ngModel"
+            required
+            [(ngModel)]="form.prevTraineeFrom"
+          />
+          <label for="prevTraineeTo" class="control-label col-sm">To:</label>
+          <input
+            type="date"
+            class="form-control form-control-sm col-md-4"
+            name="prevTraineeTo"
+            #prevTraineeTo="ngModel"
+            required
+            [(ngModel)]="form.prevTraineeTo"
+          />
+        </div>
+      </form>
+      <!--End of page 1-->
+      <!--Page 2 attachments-->
+      <form name="application-form" #attachments="ngForm" novalidate>
+        <div class="mb-3" *ngIf="applicationPage == 2">
+          <label for="cv" class="control-label">Curriculum vitae</label>
+          <input
+            class="form-control form-control-file"
+            [(ngModel)]="form.cv"
+            required
+            #cv="ngModel"
+            name="cv"
+            type="file"
+            id="cv"
+          />
+        </div>
+        <div class="form-group" *ngIf="applicationPage == 2">
+          <label for="coverLetter" class="control-label"
+            >Cover letter in English language</label
+          >
+          <input
+            class="form-control form-control-file"
+            [(ngModel)]="form.coverLetter"
+            required
+            #coverLetter="ngModel"
+            name="coverLetter"
+            type="file"
+            id="coberLetter"
+          />
+        </div>
+        <div class="form-group" *ngIf="applicationPage == 2">
+          <label for="languageCertificate" 
+            >Language competence certificate</label
+          >
+          <input
+            class="form-control form-control-file"
+            type="file"
+            [(ngModel)]="form.languageCertificate"
+            #languageCertificate="ngModel"
+            name="languageCertificate"
+            id="languageCertificate"
+          />
         </div>
       </form>
 
-      <div class="form-group">
-        <button class="btn btn-primary btn-block" *ngIf="f.form.valid" (click)="nextPage()">Next page</button>
-        
+      <div class="form-group" *ngIf="applicationPage == 0">
+        <button
+          class="btn btn-primary btn-block"
+          *ngIf="f.form.valid && languagesTableForm.valid"
+          (click)="nextPage()"
+        >
+          Next page
+        </button>
+        <p
+          *ngIf="!(f.form.valid && languagesTableForm.valid)"
+          class="alert alert-danger"
+        >
+          Fill all required fields to continue
+        </p>
       </div>
-      <div class="form-group"></div>
     </form>
-    <button class="btn btn-primary btn-block" (click)="prevPage()">Previus page</button>
+    <div class="form-group" *ngIf="applicationPage == 1">
+      <button
+        class="btn btn-primary btn-block"
+        *ngIf="universitiesTableForm.valid && prevStudyForm.valid"
+        (click)="nextPage()"
+      >
+        Next page
+      </button>
+      <p
+        *ngIf="!(universitiesTableForm.valid && prevStudyForm.valid)"
+        class="alert alert-danger"
+      >
+        Fill all required fields to continue
+      </p>
+    </div>
+    <button
+      class="btn btn-primary btn-block"
+      *ngIf="applicationPage > 0"
+      (click)="prevPage()"
+    >
+      Previus page
+    </button>
   </div>
 </div>

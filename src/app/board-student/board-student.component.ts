@@ -6,6 +6,8 @@ import { UserService } from '../_services/user.service';
   templateUrl: './board-student.component.html',
   styleUrls: ['./board-student.component.css']
 })
+
+
 export class BoardStudentComponent implements OnInit {
 
   content?: any;
@@ -15,8 +17,10 @@ export class BoardStudentComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getStudentBoard().subscribe(
       data => {
-        this.content = data;
-        this.userService.saveProfile(this.content);
+        this.content = data.object;
+        console.log("getStudentBoard-")
+        console.log(data.object);
+        this.userService.saveProfile(data);
       },
       err => {
         this.content = JSON.parse(err.error).message;
