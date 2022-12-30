@@ -162,39 +162,39 @@ export class AppFormComponent implements OnInit {
 
         var universities = [
             {
-                Institution: this.universitiesTableForm.value.Universities[0].University.name,
-                Country: this.universitiesTableForm.value.Universities[0].University.country,
-                StudyPeriodFrom: this.universitiesTableForm.value.Universities[0].StudyPeriodFrom,
-                StudyPeriodTo: this.universitiesTableForm.value.Universities[0].StudyPeriodTo,
-                DurationOfStay: this.calculateDiff(this.universitiesTableForm.value.Universities[0].StudyPeriodFrom, this.universitiesTableForm.value.Universities[0].StudyPeriodTo),
-                NumberOfCredits: this.universitiesTableForm.value.Universities[0].NumberOfCredits
+                institution: this.universitiesTableForm.value.Universities[0].University.name,
+                country: this.universitiesTableForm.value.Universities[0].University.country,
+                studyPeriodFrom: this.universitiesTableForm.value.Universities[0].StudyPeriodFrom,
+                studyPeriodTo: this.universitiesTableForm.value.Universities[0].StudyPeriodTo,
+                durationOfStay: this.calculateDiff(this.universitiesTableForm.value.Universities[0].StudyPeriodFrom, this.universitiesTableForm.value.Universities[0].StudyPeriodTo),
+                numberOfCredits: this.universitiesTableForm.value.Universities[0].NumberOfCredits
             }, {
-                Institution: this.universitiesTableForm.value.Universities[1].University.name,
-                Country: this.universitiesTableForm.value.Universities[1].University.country,
-                StudyPeriodFrom: this.universitiesTableForm.value.Universities[1].StudyPeriodFrom,
-                StudyPeriodTo: this.universitiesTableForm.value.Universities[1].StudyPeriodTo,
-                DurationOfStay: this.calculateDiff(this.universitiesTableForm.value.Universities[1].StudyPeriodFrom, this.universitiesTableForm.value.Universities[1].StudyPeriodTo),
-                NumberOfCredits: this.universitiesTableForm.value.Universities[1].NumberOfCredits
+              institution: this.universitiesTableForm.value.Universities[1].University.name,
+                country: this.universitiesTableForm.value.Universities[1].University.country,
+                studyPeriodFrom: this.universitiesTableForm.value.Universities[1].StudyPeriodFrom,
+                studyPeriodTo: this.universitiesTableForm.value.Universities[1].StudyPeriodTo,
+                durationOfStay: this.calculateDiff(this.universitiesTableForm.value.Universities[1].StudyPeriodFrom, this.universitiesTableForm.value.Universities[1].StudyPeriodTo),
+                numberOfCredits: this.universitiesTableForm.value.Universities[1].NumberOfCredits
             }, {
-                Institution: this.universitiesTableForm.value.Universities[2].University.name,
-                Country: this.universitiesTableForm.value.Universities[2].University.country,
-                StudyPeriodFrom: this.universitiesTableForm.value.Universities[2].StudyPeriodFrom,
-                StudyPeriodTo: this.universitiesTableForm.value.Universities[2].StudyPeriodTo,
-                DurationOfStay: this.calculateDiff(this.universitiesTableForm.value.Universities[2].StudyPeriodFrom, this.universitiesTableForm.value.Universities[2].StudyPeriodTo),
-                NumberOfCredits: this.universitiesTableForm.value.Universities[2].NumberOfCredits
+              institution: this.universitiesTableForm.value.Universities[2].University.name,
+                country: this.universitiesTableForm.value.Universities[2].University.country,
+                studyPeriodFrom: this.universitiesTableForm.value.Universities[2].StudyPeriodFrom,
+                studyPeriodTo: this.universitiesTableForm.value.Universities[2].StudyPeriodTo,
+                durationOfStay: this.calculateDiff(this.universitiesTableForm.value.Universities[2].StudyPeriodFrom, this.universitiesTableForm.value.Universities[2].StudyPeriodTo),
+                numberOfCredits: this.universitiesTableForm.value.Universities[2].NumberOfCredits
             }
         ];
 
-        var Languages = [
+        var languages = [
             {
-                Language: this.languagesTableForm.value.Languages[0].Language,
-                Level: this.languagesTableForm.value.Languages[0].LevelOfCompetance
+                language: this.languagesTableForm.value.Languages[0].Language,
+                level: this.languagesTableForm.value.Languages[0].LevelOfCompetance
             }, {
-                Language: this.languagesTableForm.value.Languages[1].Language,
-                Level: this.languagesTableForm.value.Languages[1].LevelOfCompetance
+                language: this.languagesTableForm.value.Languages[1].Language?this.languagesTableForm.value.Languages[1].Language:"",
+                level: this.languagesTableForm.value.Languages[1].LevelOfCompetance?this.languagesTableForm.value.Languages[1].LevelOfCompetance:""
             }, {
-                Language: this.languagesTableForm.value.Languages[2].Language,
-                Level: this.languagesTableForm.value.Languages[2].LevelOfCompetance
+                language: this.languagesTableForm.value.Languages[2].Language?this.languagesTableForm.value.Languages[2].Language:"",
+                level: this.languagesTableForm.value.Languages[2].LevelOfCompetance?this.languagesTableForm.value.Languages[2].LevelOfCompetance:""
             }
         ];
 
@@ -211,7 +211,9 @@ export class AppFormComponent implements OnInit {
         } = this.profile;
 
 
-        console.log({
+        var jsonBody = {
+          languages,
+            universities,
             title,
             profileNumber,
             email,
@@ -234,9 +236,17 @@ export class AppFormComponent implements OnInit {
             prevStudyTo,
             prevTraineeFrom,
             prevTrainee,
-            prevTraineeTo,
-            Languages
+            prevTraineeTo           
+        };
+        console.log(jsonBody);
+        console.log(JSON.stringify(jsonBody));
+        var result = this.applicationService.addApplication(jsonBody);
+        var resultText;
+        result.subscribe(data =>{
+          resultText=data;
         })
+        console.log("result of post: "+ resultText);
+        
     }
 
 }

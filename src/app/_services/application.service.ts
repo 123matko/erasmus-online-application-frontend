@@ -33,4 +33,8 @@ export class ApplicationService {
     var profile = window.sessionStorage.getItem(PROFILE_KEY);
     return profile;
   }
+
+  addApplication(body:any){
+    return this.http.post(ERASMUS_URL+'addAplication',body,httpOptions);
+  }
 }
