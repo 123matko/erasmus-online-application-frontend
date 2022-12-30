@@ -2,7 +2,7 @@
 image: node:lts
 # Functions that should be executed before the build script is run
 before_script:
-  - npm install
+  - npm i @angular/cli
   - npm i bootstrap@5.3.0-alpha1
   
 pages:
