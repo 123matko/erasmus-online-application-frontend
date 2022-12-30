@@ -7,7 +7,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { BoardStudentComponent } from './board-student/board-student.component';
 import { BoardTeacherComponent } from './board-teacher/board-teacher.component';
 import { BoardCoordinatorComponent } from './board-coordinator/board-coordinator.component';
-import { AppFormComponent } from './app-form/app-form.component';
+import { AppFormComponent } from './student-form/student-form.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },

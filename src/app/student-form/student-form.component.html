@@ -502,6 +502,13 @@
 
       <div class="form-group" *ngIf="applicationPage == 0">
         <button
+      class="btn btn-primary btn-block"
+      *ngIf="applicationPage > 0"
+      (click)="prevPage()"
+    >
+      Previus page
+    </button>
+        <button
           class="btn btn-primary btn-block"
           *ngIf="f.form.valid && languagesTableForm.valid"
           (click)="nextPage()"
@@ -518,6 +525,13 @@
     </form>
     <div class="form-group" *ngIf="applicationPage == 1">
       <button
+      class="btn btn-primary btn-block"
+      *ngIf="applicationPage > 0"
+      (click)="prevPage()"
+    >
+      Previus page
+    </button>
+      <button
         class="btn btn-primary btn-block"
         *ngIf="universitiesTableForm.valid && prevStudyForm.valid"
         (click)="nextPage()"
@@ -531,12 +545,28 @@
         Fill all required fields to continue
       </p>
     </div>
-    <button
+    <div class="form-group" *ngIf="applicationPage == 2">
+      <button
       class="btn btn-primary btn-block"
       *ngIf="applicationPage > 0"
       (click)="prevPage()"
     >
       Previus page
     </button>
+      <button
+        class="btn btn-primary btn-block"
+        *ngIf="attachments.valid"
+        (click)="onSubmit()"
+      >
+        Submit
+      </button>
+      <p
+        *ngIf="!(attachments.valid)"
+        class="alert alert-danger"
+      >
+        Fill all required fields to continue
+      </p>
+    
+  </div>
   </div>
 </div>
