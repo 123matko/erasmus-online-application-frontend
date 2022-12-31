@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { TokenStorageService } from './token-storage.service';
 import { ProfileComponent } from '../profile/profile.component';
 
-const MAIS_URL = 'http://localhost:8080/api/test/';
+const MAIS_URL = 'https://erasmus-mobility-fakemais.azurewebsites.net/api/test/';
 
 const USER_KEY = 'auth-user';
 const PROFILE_KEY = 'profile';

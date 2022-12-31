@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient , HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const ERASMUS_URL = 'http://localhost:8081/api/application/';
+const ERASMUS_URL = 'https://erasmus-mobility-backend.azurewebsites.net/api/application/';
 
 const PROFILE_KEY = 'profile';
 
