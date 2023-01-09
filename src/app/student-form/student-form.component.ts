@@ -3,6 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {ApplicationService} from '../_services/application.service';
 
 import {FormBuilder, FormControl, FormGroup, FormArray} from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 
 const PROFILE_KEY = 'profile';
@@ -19,12 +20,12 @@ dictionary.set("Srbská", "Serbian");
 @Component({selector: 'app-app-form', templateUrl: './student-form.component.html', styleUrls: ['./student-form.component.css']})
 export class AppFormComponent implements OnInit {
     applicationPage = 0;
-
-
+    callId:number;
+    callContent?: any;
     languagesTableForm : any;
     universitiesTableForm : any;
     rowsCount : number = 3;
-
+    resultText?:any;
     universitiesList;
     Sex = ["Male", "Female",];
 
@@ -78,7 +79,7 @@ export class AppFormComponent implements OnInit {
         return this.universitiesTableForm.get('Universities')as FormArray;
     }
 
-    constructor(private fb : FormBuilder, private applicationService : ApplicationService) {}
+    constructor(private fb : FormBuilder, private applicationService : ApplicationService, private route: ActivatedRoute) {}
 
 
     ngOnInit(): void {
@@ -87,7 +88,6 @@ export class AppFormComponent implements OnInit {
         });
         this.profile = JSON.parse(window.sessionStorage.getItem(PROFILE_KEY));
         console.log(this.profile);
-        this.mobility = "2023/2024";
         this.form.firstname = this.profile.firstname;
         this.form.lastname = this.profile.lastname;
         this.form.address = this.profile.address;
@@ -95,9 +95,10 @@ export class AppFormComponent implements OnInit {
         this.form.dateofbirth = this.profile.dateOfBirth.split(" ")[0];
         this.form.placeofbirth = this.profile.placeOfBirth;
         this.form.nationality = dictionary.get(this.profile.nationality);
-
+        this.callId = Number.parseInt( this.route.snapshot.paramMap.get('id'));
         console.log(this.form);
-
+        
+        this.setMobility();
         this.languagesTableForm = this.fb.group({Languages: this.fb.array([])});
         for (let i = 0; i < this.rowsCount; i++) {
             this.Languages.push(this.fb.group({Language: new FormControl(), LevelOfCompetance: new FormControl()}));
@@ -114,6 +115,24 @@ export class AppFormComponent implements OnInit {
         }
 
 
+    }
+
+    setMobility(){
+        
+        this.applicationService.getActiveCalls().subscribe(
+            data => {
+              
+              for(let call of data.list){
+                console.log(call.name);
+                if(call.id==this.callId){
+                    this.mobility=call.name;
+                }
+            }
+            }
+          );
+        
+       /* 
+        }*/
     }
 
     onChange(value : string) {
@@ -200,6 +219,7 @@ export class AppFormComponent implements OnInit {
 
 
         var {
+            
             profileNumber,
             title,
             email,
@@ -209,9 +229,11 @@ export class AppFormComponent implements OnInit {
             studyAverage,
             yearOfStudy
         } = this.profile;
-
-
+        var studentId= this.profile.id;
+        var callId = this.callId;
         var jsonBody = {
+            studentId,
+            callId,
           languages,
             universities,
             title,
@@ -240,12 +262,11 @@ export class AppFormComponent implements OnInit {
         };
         console.log(jsonBody);
         console.log(JSON.stringify(jsonBody));
-        var result = this.applicationService.addApplication(jsonBody);
-        var resultText;
-        result.subscribe(data =>{
-          resultText=data;
+        ;
+        this.applicationService.addApplication(jsonBody).subscribe(data =>{
+            console.log(data);
+          this.resultText=data;
         })
-        console.log("result of post: "+ resultText);
         
     }
 

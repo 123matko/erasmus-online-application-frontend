@@ -1,6 +1,6 @@
 <div class="container">
   <header class="jumbotron">
-    <p>Výzva Erasmus+ mobilita {{ mobility }}</p>
+    <p>{{ mobility }}</p>
   </header>
   <div class="card card-container">
     <form
@@ -566,7 +566,12 @@
       >
         Fill all required fields to continue
       </p>
-    
+      <p
+      *ngIf="(resultText!=null)"
+      class="alert alert-success"
+    >
+      {{resultText!.message}}
+    </p>
   </div>
   </div>
 </div>

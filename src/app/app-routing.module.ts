@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'student', component: BoardStudentComponent },
   { path: 'teacher', component: BoardTeacherComponent },
   { path: 'coordinator', component: BoardCoordinatorComponent },
-  { path: 'app-form', component: AppFormComponent},
+  { path: 'app-form/:id', component: AppFormComponent, pathMatch: 'full'},
   { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 
