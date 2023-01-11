@@ -3,9 +3,11 @@ import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TokenStorageService } from './token-storage.service';
 import { ProfileComponent } from '../profile/profile.component';
+import { SpinnerService } from './spinner.service';
 
 const MAIS_URL = 'https://erasmus-mobility-fakemais.azurewebsites.net/api/test/';
 //const MAIS_URL = 'http://localhost:8080/api/test/';
+
 const USER_KEY = 'auth-user';
 const PROFILE_KEY = 'profile';
 var profile = null;
@@ -28,7 +30,7 @@ export class UserService {
 
   user = window.sessionStorage.getItem(USER_KEY);
   parsedUser = this.user?JSON.parse(this.user):[];
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,public spinnerService: SpinnerService) { }
 
   saveProfile(profile:any): void{
     console.log(profile);

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SpinnerService } from './_services/spinner.service';
 import { TokenStorageService } from './_services/token-storage.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class AppComponent implements OnInit{
   showTeacherBoard = false;
   username?: string;
 
-  constructor(private tokenStorageService: TokenStorageService) { }
+  constructor(private tokenStorageService: TokenStorageService, public spinnerService: SpinnerService) { }
 
   ngOnInit(): void {
     this.isLoggedIn = !!this.tokenStorageService.getToken();

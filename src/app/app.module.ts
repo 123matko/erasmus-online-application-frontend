@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +16,7 @@ import { BoardStudentComponent } from './board-student/board-student.component';
 
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { AppFormComponent } from './student-form/student-form.component';
+import { CustomHttpInterceptor } from './_services/http-interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +35,11 @@ import { AppFormComponent } from './student-form/student-form.component';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [authInterceptorProviders],
+  providers: [authInterceptorProviders,{
+    provide: HTTP_INTERCEPTORS,
+    useClass: CustomHttpInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

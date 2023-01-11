@@ -2,6 +2,9 @@
     <header class="jumbotron">
       <p><strong>{{content?.firstname}} {{content?.lastname}}</strong></p>
     </header>
+    <div class="spinner-border"  *ngIf="spinnerService.visibility | async">
+      <span class="sr-only"></span>
+    </div>
     <p>
       <strong>Address:</strong>
       {{content?.address}}

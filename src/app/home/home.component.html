@@ -1,5 +1,9 @@
 <div class="card">
+  
   <div class="card-body">
+    <div class="spinner-border text-primary" role="status" *ngIf="spinnerService.visibility | async">
+      <span class="sr-only"></span>
+    </div>
     <h5 class="card-title">{{content?.list[0].name}}</h5>
   
         <a class="btn btn-primary" *ngIf="isUserLoggedIn" [routerLink]="['/app-form', content?.list[0].id]" > Apply now

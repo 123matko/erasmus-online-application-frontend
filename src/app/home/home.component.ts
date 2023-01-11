@@ -3,6 +3,7 @@ import { ApplicationService } from '../_services/application.service';
 import { UserService } from '../_services/user.service';
 import {NavigationEnd, Router} from '@angular/router';
 import { filter } from 'rxjs';
+import { SpinnerService } from '../_services/spinner.service';
 
 const USER_KEY = 'auth-user';
 @Component({
@@ -17,7 +18,7 @@ export class HomeComponent implements OnInit {
   isUserLoggedIn?:boolean;
   user = window.sessionStorage.getItem(USER_KEY);
   parsedUser = this.user?JSON.parse(this.user):[];
-  constructor(private applicationService: ApplicationService, private userService: UserService) { 
+  constructor(private applicationService: ApplicationService, private userService: UserService, public spinnerService: SpinnerService) { 
   }
 
   ngOnInit(): void {

@@ -1,9 +1,14 @@
 <div class="container" *ngIf="currentUser; else loggedOut">
+  
     <header class="jumbotron">
+      
       <h3>
         {{ currentUser.firstname }} {{currentUser.lastname}}
       </h3>
     </header>
+    <div class="spinner-border"  >
+      <span class="sr-only">Loading...</span>
+    </div>
     <p>
       <strong>Token:</strong>
       {{ currentUser.accessToken.substring(0, 20) }} ...

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SpinnerService } from '../_services/spinner.service';
 import { UserService } from '../_services/user.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class BoardStudentComponent implements OnInit {
 
   content?: any;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, public spinnerService: SpinnerService) { }
 
   ngOnInit(): void {
     this.userService.getStudentBoard().subscribe(
