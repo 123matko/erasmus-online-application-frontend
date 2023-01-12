@@ -274,7 +274,7 @@ export class AppFormComponent implements OnInit {
         },
         error =>{
             this.resultText.result="ERROR";
-            this.resultText.text=error.message;
+            this.resultText.text=error.error.message;
         })
         
     }
