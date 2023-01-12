@@ -275,6 +275,9 @@
       <p *ngIf="!(attachments.valid)" class="alert alert-danger">
         Fill all required fields to continue
       </p>
+      <div class="spinner-border text-primary"  *ngIf="spinnerService.visibility | async">
+        <span class="sr-only"></span>
+      </div>
       <p *ngIf="(resultText!=null && resultText.result=='OK')" class="alert alert-success">
         {{resultText!.text}}
       </p>

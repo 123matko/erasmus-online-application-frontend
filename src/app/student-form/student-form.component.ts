@@ -5,6 +5,7 @@ import {ApplicationService} from '../_services/application.service';
 import {FormBuilder, FormControl, FormGroup, FormArray} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { error } from 'jquery';
+import { SpinnerService } from '../_services/spinner.service';
 
 
 const PROFILE_KEY = 'profile';
@@ -27,8 +28,8 @@ export class AppFormComponent implements OnInit {
     universitiesTableForm : any;
     rowsCount : number = 3;
     resultText:{
-        result:String,
-        text:String
+        result:any,
+        text:any
     };
     universitiesList;
     Sex = ["Male", "Female",];
@@ -83,7 +84,7 @@ export class AppFormComponent implements OnInit {
         return this.universitiesTableForm.get('Universities')as FormArray;
     }
 
-    constructor(private fb : FormBuilder, private applicationService : ApplicationService, private route: ActivatedRoute) {}
+    constructor(private fb : FormBuilder, private applicationService : ApplicationService, private route: ActivatedRoute, public spinnerService:SpinnerService) {}
 
 
     ngOnInit(): void {
@@ -101,6 +102,8 @@ export class AppFormComponent implements OnInit {
         this.form.nationality = dictionary.get(this.profile.nationality);
         this.callId = Number.parseInt( this.route.snapshot.paramMap.get('id'));
         console.log(this.form);
+
+        this.resultText={result:"",text: ""};
         
         this.setMobility();
         this.languagesTableForm = this.fb.group({Languages: this.fb.array([])});
@@ -275,6 +278,7 @@ export class AppFormComponent implements OnInit {
         error =>{
             this.resultText.result="ERROR";
             this.resultText.text=error.error.message;
+            console.log(this.resultText.text);
         })
         
     }

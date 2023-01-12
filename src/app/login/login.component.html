@@ -62,7 +62,9 @@
           </div>
         </div>
       </form>
-  
+      <div class="spinner-border"  *ngIf="spinnerService.visibility | async">
+        <span class="sr-only"></span>
+      </div>
       <div class="alert alert-success" *ngIf="isLoggedIn">
         Logged in.
       </div>
