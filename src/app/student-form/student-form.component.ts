@@ -4,6 +4,7 @@ import {ApplicationService} from '../_services/application.service';
 
 import {FormBuilder, FormControl, FormGroup, FormArray} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { error } from 'jquery';
 
 
 const PROFILE_KEY = 'profile';
@@ -25,7 +26,10 @@ export class AppFormComponent implements OnInit {
     languagesTableForm : any;
     universitiesTableForm : any;
     rowsCount : number = 3;
-    resultText?:any;
+    resultText:{
+        result:String,
+        text:String
+    };
     universitiesList;
     Sex = ["Male", "Female",];
 
@@ -265,7 +269,12 @@ export class AppFormComponent implements OnInit {
         ;
         this.applicationService.addApplication(jsonBody).subscribe(data =>{
             console.log(data);
-          this.resultText=data;
+          this.resultText.result="OK";
+          this.resultText.text=data.message;
+        },
+        error =>{
+            this.resultText.result="ERROR";
+            this.resultText.text=error.message;
         })
         
     }
